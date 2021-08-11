@@ -1,0 +1,65 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE html>
+<html lang="en">
+    {% block head %}
+        <head>
+            <title>Book Inc</title>
+            <meta charset="UTF-8">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+            <link rel="stylesheet" href="{{ url_for('static',filename = 'css/style.css') }}">
+        </head>
+    {% endblock %}
+
+    {% block body %}
+        <body>
+            <div class="wrapper">
+                {% block navnar %}
+                    <nav class="navbar navbar-inverse">
+                        <div class="container">
+                            <a class="navbar navbar-text" href="{{ url_for('main.display_book') }}">
+                                <h3 class="title"> the book shop around the corner</h3>
+                            </a>
+                            <ul class="nav navbar-nav pull-right">
+                                <li><a href="{{ url_for('main.display_book') }}">HOME</a></li>
+                                <li><a href="{{ url_for('authentication.register_user') }}">Register</a></li>
+                                <li>
+                                    {% if current_user.is_authenticated %}
+                                    <a href="{{ url_for('authenticated.log_out_user') }}">Sing Out</a>
+                                    {% else %}
+                                    <a href="{{ url_for('authentication.do_the_login') }}">SingIn</a>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    <a href="">
+                                        {% if current_user.is_authenticated %}
+                                        logged as <b style="color: deeppink">{{ current_user.user_name.title() }}</b>
+                                        {% else %}
+                                        not loggedIn
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                {% endblock %}
+            {% for message in get_flashed_messages() %}
+                <div class="container alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert"></button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% block content %}
+                {% endblock %}
+            {% block footer %}
+                <footer>
+                    <div class="container ftr">
+                        <hr>
+                        <p class="text-center small"> the shop around the corner &copf;2021</p>
+                    </div>
+                </footer>
+                {% endblock %}
+            </div>
+        </body>
+    {% endblock %}
+</html>
